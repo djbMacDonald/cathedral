@@ -1,20 +1,38 @@
 'use strict';
 angular.module('fractalApp').factory('GraphFactory', [function(){
-  var seed = [{x:1,y:2},{x:5,y:5},{x:0,y:0}];
-  var points = seed;
+  var seed = [{x:0,y:0},{x:1,y:0},{x:2,y:1},{x:3,y:0},{x:4,y:0}];
+  var points = [];
+  points.push(seed);
+  points = _.flatten(points);
 
   var iterate = function(){
     var temp = [];
     for (var i = 0; i < points.length - 1; i++){
-      var dist = findDist(points[i], points[i+1]);
-      var piece = scale(seed, dist);
-      var theta = findAngleFromZero(points[i], points[i+1]);
-      piece = rotate(piece, theta);
-      piece = translate(piece, points[i]);
+      var theta = findAngleFromZero(points[i],points[i+1]);
+      console.log(theta);
+      var piece = rotate(seed, theta);
       temp.push(piece);
     }
     temp = _.flatten(temp);
-    angular.copy(temp, points)
+    angular.copy(temp, points);
+
+
+
+
+
+    // var temp = [];
+    // var seedLength = findDist(seed[0], seed.slice(-1)[0]);
+    // for (var i = 0; i < points.length - 1; i++){
+    //   var dist = findDist(points[i], points[i+1]);
+    //   var piece = scale(seed, dist);
+    //   var theta = findAngleFromZero(points[i], points[i+1]);
+    //   piece = rotate(piece, theta);
+    //   piece = translate(piece, points[i]);
+    //   piece = translate(piece,{x:0,y:i});
+    //   temp.push(piece);
+    // }
+    // temp = _.flatten(temp);
+    // angular.copy(temp, points)
   };
 
   var findDist = function(point1, point2){
@@ -30,9 +48,9 @@ angular.module('fractalApp').factory('GraphFactory', [function(){
   };
 
   var findAngleFromZero = function(point1, point2){
-    var xLength = Math.abs(point1.x - point2.x);
-    var yLength = Math.abs(point1.y - point2.y);
-    return Math.tan(yLength / xLength);
+    var xLength = point2.x - point1.x;
+    var yLength = point2.y - point1.y;
+    return Math.atan(yLength / xLength);
   };
 
   var rotate = function(array, theta){
