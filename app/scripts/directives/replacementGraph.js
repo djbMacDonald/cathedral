@@ -1,30 +1,21 @@
+'use strict';
 angular.module('MainDirective').directive('replacementGraph', ['d3Service', replacementGraph]);
 
-graphCtrl.$inject = ['GraphFactory', '$scope'];
 
-function graphCtrl(GraphFactory, $scope){
-  var vm = this;
-  // vm.points = GraphFactory.points;
-  vm.points = 'bad'
-  console.log($scope);
-  $scope.points = 'something';
-
-  vm.doStuff = function(){
-    return 'some text'
-  };
-}
 
 function replacementGraph (d3Service){
   return {
     restrict: 'EA',
-    scope: {
-      points: '@'
-    },
-    controller: graphCtrl,
+    templateUrl: 'views/partials/replacement.html',
+    controller: 'MainCtrl',
+    controllerAs: 'main',
     bindToController: true,
+    scope: {
+      main: '@'
+    },
     link: function(scope, element, attrs) {
       d3Service.d3().then(function(d3) {
-        console.log(scope.points);
+        var points = scope.main.points;
         var margin = {top: 20, right: 20, bottom: 20, left: 20},
           width = 300 - margin.left - margin.right,
           height = 300 - margin.top - margin.bottom;
@@ -32,8 +23,6 @@ function replacementGraph (d3Service){
         var x = d3.scale.linear().range([0, width]);
 
         var y = d3.scale.linear().range([height, 0]);
-
-        var yAxis = d3.svg.axis().scale(y).orient('left');
 
         var line = d3.svg.line()
           .x(function(d) { return x(d.x); })
@@ -45,46 +34,19 @@ function replacementGraph (d3Service){
          .append('g')
          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-        // Hard coded data
-        scope.data = [
-          {x: 0, y: 0},
-          {x: 10, y: 0},
-          {x: 20, y: 10},
-          {x:30, y:0},
-          {x:40, y: 0}
-        ];
-
-        scope.data.forEach(function(d) {
+        points.forEach(function(d) {
           d.x = d.x;
           d.y = +d.y;
         });
 
-        x.domain(d3.extent(scope.data, function(d) { return d.x; }));
-        y.domain(d3.extent(scope.data, function(d) { return d.y; }));
-
-        svg.append('g')
-          .attr('class', 'y axis')
-          .call(yAxis)
-          .append('text')
-          .attr('transform', 'rotate(-90)')
-          .attr('y', 6)
-          .attr('dy', '.71em')
-          .style('text-anchor', 'end')
-          .text(scope.points);
+        x.domain(d3.extent(points, function(d) { return d.x; }));
+        y.domain(d3.extent(points, function(d) { return d.y; }));
 
         svg.append('path')
-          .datum(scope.data)
+          .datum(points)
           .attr('class', 'line')
           .attr('d', line);
-
-
-
-
-
-
-
-
-
+        console.log(scope.main.points);
       });
     }
   };
