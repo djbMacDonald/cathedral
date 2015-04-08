@@ -1,9 +1,9 @@
 'use strict';
-angular.module('MainDirective').directive('replacementGraph', ['d3Service', replacementGraph]);
+angular.module('MainDirective').directive('replacementGraph', replacementGraph);
 
 
 
-function replacementGraph (d3Service){
+function replacementGraph (){
   return {
     restrict: 'EA',
     templateUrl: 'views/partials/replacement.html',

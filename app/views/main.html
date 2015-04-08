@@ -2,9 +2,9 @@
   <!-- <p>{{main.things}}</p> -->
   <!-- <button ng-click='main.doStuff()'>Click Me</button> -->
 <!-- </div> -->
-
 <div class="jumbotron">
+<loading-modal ng-if='main.loading'></loading-modal>
   <a ng-click='main.doStuff()'>Click Me</a>
-  <div replacement-graph></div>
+  <replacement-graph></replacement-graph>
 </div>
 

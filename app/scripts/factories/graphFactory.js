@@ -3,6 +3,7 @@ angular.module('fractalApp').factory('GraphFactory', [function(){
   // var seed = [{x:0,y:0},{x:1,y:0},{x:2,y:1},{x:3,y:0},{x:4,y:0}];
   // var seed = [{x:0,y:1},{x:0,y:0},{x:1,y:0},{x:1,y:1.2}];
   var seed = [{x:0,y:1},{x:0,y:0},{x:1,y:0}];
+  // var seed = [{x:50,y:60},{x:10,y:0},{x:90,y:90}];
   var points = [];
   points.push(seed);
   points = _.flatten(points);
@@ -13,7 +14,6 @@ angular.module('fractalApp').factory('GraphFactory', [function(){
     var seedTheta = findAngleFromZero(seed[0], seed.slice(-1)[0]);
     for (var i = 0; i < points.length - 1; i++){
       var theta = findAngleFromZero(points[i],points[i+1]);
-      console.log(theta);
       var piece = rotate(seed, theta-seedTheta);
       var dist = findDist(points[i],points[i+1]);
       piece = scale(piece, dist/seedLength);
@@ -86,7 +86,8 @@ angular.module('fractalApp').factory('GraphFactory', [function(){
 
   return {
     points: points,
-    iterate: iterate
+    iterate: iterate,
+    seed: seed
   };
 
 }]);
