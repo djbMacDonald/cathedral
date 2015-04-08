@@ -26,21 +26,13 @@ function MainCtrl(GraphFactory, d3Service) {
   vm.draw = function(){
     d3Service.d3().then(function(d3) {
       var points = vm.points;
-      var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 300 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom;
+      var margin = {top: 50, right: 50, bottom: 50, left: 50},
+        width = 500 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
       var x = d3.scale.linear().range([0, width]);
 
       var y = d3.scale.linear().range([height, 0]);
-
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
 
       var line = d3.svg.line()
         .x(function(d) { return x(d.x); })
@@ -51,7 +43,7 @@ var yAxis = d3.svg.axis()
       var svg = d3.select('#graph').append('svg')
        .attr('width', width + margin.left + margin.right)
        .attr('height', height + margin.top + margin.bottom)
-       .append('g')
+       .append('g').attr('class', 'something')
        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
       points.forEach(function(d) {
@@ -71,20 +63,16 @@ var yAxis = d3.svg.axis()
         .attr('class', 'line')
         .attr('d', line);
 
-          svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+      d3.select('svg').call(d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoom));
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end");
+      d3.select('svg').call(d3.behavior.drag());
 
+      function zoom() {
+        console.log('zoom');
+        svg.attr("transform", "translate(" + margin.left + ',' + margin.top + ")translate("+d3.event.translate+")scale(" + d3.event.scale + ")");
+      }
     });
   };
+
+  vm.draw();
 }
