@@ -19,7 +19,6 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
   vm.seed = GraphFactory.seed;
 
   vm.doStuff = function(){
-    console.log('start');
       vm.loading = true;
     $timeout(function(){
       GraphFactory.iterate();
@@ -98,6 +97,10 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
         .domain([0,height])
         .range([0, 20]);
 
+      function dragstart(d){
+
+      };
+
       function drag (d,i){
         d.x += xInv(d3.event.dx);
         d.y -= yInv(d3.event.dy);
@@ -109,7 +112,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
 
         d3.select(this).attr("cx", x(d.x));
         d3.select(this).attr("cy", y(d.y));
-        d3.selectAll('path').remove();
+        d3.selectAll('.input path').remove();
         drawPath();
         vm.drawFourth();
       };
@@ -121,7 +124,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
         d3.selectAll('path').remove();
         drawPath();
         drawNodes();
-        vm.draw();
+        vm.drawFourth();
       };
 
       function drawGrid(){
@@ -160,7 +163,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
           .attr("r", 6)
           .attr("fill", "black");
 
-        d3.selectAll('.circle').call(d3.behavior.drag().on('drag', drag).on('dragend',dragend));
+        d3.selectAll('.circle').call(d3.behavior.drag().on('dragstart', dragstart).on('drag', drag).on('dragend',dragend));
       }
 
       drawGrid();
@@ -171,7 +174,6 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
   };
 
   vm.draw = function(){
-    console.log('draw');
     d3Service.d3().then(function(d3) {
       $('.replacementGraph').remove();
       var margin = {top: 50, right: 50, bottom: 50, left: 50},
