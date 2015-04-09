@@ -18,6 +18,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 body {
   padding: 0;
+  background-image: url('/images/fractal-background.jpg');
 }
 
 svg {
@@ -68,4 +69,33 @@ svg {
 
 a {
   margin-right: 10px;
+}
+
+a.navbar-brand {
+    padding-top: 0;
+  }
+
+.logo {
+  max-height: 50px;
+  float: left;
+}
+
+#brandText {
+  line-height: 50px;
+}
+
+.jumbotron {
+  width: 90%;
+  margin: 0 auto;
+  padding-bottom: 10px;
+}
+
+#description {
+  float: right;
+  width: 300px;
+  margin-top: -250px;
+}
+
+footer {
+  margin-top: 50px;
 }
