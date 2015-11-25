@@ -9,9 +9,6 @@ angular.module('fractalApp').config(function ($routeProvider) {
       .when('/about', {
         templateUrl: 'views/about.html',
       })
-      .when('/contact', {
-        templateUrl: 'views/contact.html',
-      })
       .otherwise({
         redirectTo: '/'
       });

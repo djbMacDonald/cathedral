@@ -60,7 +60,7 @@ svg {
 }
 
 #inputArea {
-  float: right;
+  //float: right;
 }
 
 #graph {
@@ -69,6 +69,7 @@ svg {
 
 a {
   margin-right: 10px;
+  cursor: pointer;
 }
 
 a.navbar-brand {
@@ -91,11 +92,23 @@ a.navbar-brand {
 }
 
 #description {
-  float: right;
+  //float: right;
   width: 300px;
-  margin-top: -250px;
+  //margin-top: -250px;
 }
 
 footer {
   margin-top: 50px;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.clear {
+  clear: both;
 }

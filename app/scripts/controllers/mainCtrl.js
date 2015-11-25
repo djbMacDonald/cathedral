@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name fractalApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the fractalApp
- */
 angular.module('fractalApp').controller('MainCtrl', MainCtrl);
 
 MainCtrl.$inject = ['GraphFactory', 'd3Service', '$timeout'];
@@ -14,11 +7,11 @@ MainCtrl.$inject = ['GraphFactory', 'd3Service', '$timeout'];
 function MainCtrl(GraphFactory, d3Service, $timeout) {
 
   var vm = this;
-
   vm.points = GraphFactory.points;
   vm.seed = GraphFactory.seed;
 
-  vm.doStuff = function(){
+  //adds another iteration to the fractal
+  vm.iterateFurther = function(){
       vm.loading = true;
     $timeout(function(){
       GraphFactory.iterate();
@@ -29,6 +22,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
     },100);
   };
 
+  //adds another node to the seed shape in a random spot
   vm.addNode = function(){
     GraphFactory.addNode();
     vm.createInput();
@@ -36,6 +30,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
     vm.drawFourth();
   };
 
+  //removes the last node
   vm.removeNode = function(){
     GraphFactory.removeNode();
     vm.createInput();
@@ -43,6 +38,17 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
     vm.drawFourth();
   };
 
+  //resets graph to starting position
+  vm.reset = function(){
+    GraphFactory.seed = [{x:7,y:13},{x:7,y:7},{x:13,y:7}];
+    GraphFactory.points = GraphFactory.seed;
+    angular.copy(GraphFactory.seed, vm.seed);
+    angular.copy(GraphFactory.points, vm.points);
+    vm.drawFourth();
+    vm.createInput();
+  };
+
+  //draws the fourth iteration of the fractal
   vm.drawFourth = function(){
     GraphFactory.setPointsToSeed();
     GraphFactory.iterate();
@@ -52,6 +58,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
     vm.draw();
   };
 
+  //creates the input grid
   vm.createInput = function(){
     d3Service.d3().then(function(d3) {
       $('.input').remove();
@@ -74,7 +81,6 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
       }
 
       var x = d3.scale.linear().range([0, width]);
-
       var y = d3.scale.linear().range([height, 0]);
 
       var line = d3.svg.line()
@@ -97,10 +103,12 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
         .domain([0,height])
         .range([0, 20]);
 
+      //create the action for dragging the input nodes
       function dragstart(d){
 
       };
 
+      //update shape while dragging
       function drag (d,i){
         d.x += xInv(d3.event.dx);
         d.y -= yInv(d3.event.dy);
@@ -117,6 +125,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
         vm.drawFourth();
       };
 
+      //lock in the shape when releasing the dragged node.
       function dragend(d){
         d.x = Math.round(d.x);
         d.y = Math.round(d.y);
@@ -128,6 +137,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
       };
 
       function drawGrid(){
+        //x-axis
         svg.append("g")
           .attr("class", "grid")
           .attr("transform", "translate(0," + height + ")")
@@ -135,7 +145,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
             .tickSize(-height, 0, 0)
             .tickFormat("")
           );
-
+        //y-axis
         svg.append("g")
           .attr("class", "grid")
           .call(make_y_axis()
@@ -144,6 +154,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
           );
       }
 
+      //draw the lines between the nodes
       function drawPath(){
         var path = svg.append('path')
           .datum(vm.seed)
@@ -153,6 +164,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
           .attr('stroke', 'steelblue');
       }
 
+      //draw the nodes
       function drawNodes(){
         svg.selectAll("circle.line")
           .data(vm.seed)
@@ -166,13 +178,14 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
         d3.selectAll('.circle').call(d3.behavior.drag().on('dragstart', dragstart).on('drag', drag).on('dragend',dragend));
       }
 
+      //call the defined methods to create the grid, path, and nodes.
       drawGrid();
       drawPath();
       drawNodes();
-
     });
   };
 
+  //draw the fractal
   vm.draw = function(){
     d3Service.d3().then(function(d3) {
       $('.replacementGraph').remove();
@@ -206,6 +219,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
       x.domain([xMin, xMin + range]);
       y.domain([yMin, yMin + range]);
 
+      //blue path of fractal
       var path = svg.append('path')
         .datum(vm.points)
         .attr('class', 'line')
@@ -213,6 +227,7 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
         .style('stroke-width', 2)
         .attr('stroke', 'steelblue');
 
+      //red path showing original
       var seedPath = svg.append('path')
         .datum(vm.seed)
         .attr('class', 'line')
@@ -220,17 +235,22 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
         .style('stroke-width', 0.3)
         .attr('stroke', 'red');
 
+      //zoom
       d3.select('.replacementGraph').call(d3.behavior.zoom().scaleExtent([1, 10]).on("zoom", zoom));
 
+      //drag
       d3.select('.replacementGraph').call(d3.behavior.drag());
 
+      //on zoom keep line width constant
       function zoom() {
-        svg.attr("transform", "translate(" + margin.left + ',' + margin.top + ")translate("+d3.event.translate+")scale(" + d3.event.scale + ")");
+        svg.attr("transform", "translate(" + margin.left + ',' + margin.top + ")translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         path.style('stroke-width', 2 / d3.event.scale);
         seedPath.style('stroke-width', 0.3 / d3.event.scale);
       }
     });
   };
+
+  //create the input and draw the fourth iteratino of the starting shape
   vm.init = function(){
     if ($('svg').length === 0){
       vm.createInput();
@@ -239,5 +259,6 @@ function MainCtrl(GraphFactory, d3Service, $timeout) {
 
   };
 
+  //on loading page call the init method to draw the starting shapes
   vm.init();
 }

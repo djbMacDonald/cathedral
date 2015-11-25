@@ -1,8 +1,6 @@
 'use strict';
 angular.module('MainDirective').directive('replacementGraph', replacementGraph);
 
-
-
 function replacementGraph (){
   return {
     restrict: 'EA',

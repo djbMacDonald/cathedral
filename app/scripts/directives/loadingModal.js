@@ -1,8 +1,6 @@
 'use strict';
 angular.module('MainDirective').directive('loadingModal', loadingModal);
 
-
-
 function loadingModal (){
   return {
     restrict: 'EA',

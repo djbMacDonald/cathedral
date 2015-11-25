@@ -1,6 +1,21 @@
-<a ng-click='main.addNode()'>Add Node</a>
-<a ng-click='main.removeNode()'>Remove Node</a>
-<div id='inputArea'></div>
-<div id='graph'></div>
-<p>Points Drawn: {{main.points.length}}</p>
-<p id='description'>Every iteration replaces line segment with a new copy of the shape on the right. By default the 4th iteration of the fractal is shown.</p>
+<div>
+  <a ng-click='main.iterateFurther()'>Iterate Further</a>
+  <a ng-click='main.addNode()'>Add Node</a>
+  <a ng-click='main.removeNode()'>Remove Node</a>
+  <a ng-click='main.reset()'>Reset</a>
+</div>
+<div class='left'>
+  <div id='graph'></div>
+  <p>Points Drawn: {{main.points.length}}</p>
+</div>
+<div class='right'>
+  <div id='inputArea'></div>
+  <p id='description'>Every iteration replaces line segment with a new copy of the shape on the right. By default the 4th iteration of the fractal is shown.</p>
+</div>
+<div class='clear'></div>
+
+
+
+
+
+
