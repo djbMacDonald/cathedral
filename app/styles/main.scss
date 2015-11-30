@@ -16,6 +16,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   padding: 0.2em 0;
 }
 
+//grunt build breaks this url. have to go into dist/styles and add /cathedral to url
 body {
   padding: 0;
   background-image: url('/images/fractal-background.jpg');
