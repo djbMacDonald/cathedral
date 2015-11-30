@@ -6,11 +6,11 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
+    <!-- build:css(app) styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
@@ -55,7 +55,7 @@
     </div>
 
 
-    <!-- build:js(.) scripts/vendor.js -->
+    <!-- build:js(app/..) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
@@ -66,19 +66,20 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/routes/routes.js"></script>
-        <!-- Services -->
-        <script src="scripts/services/d3service.js"></script>
-        <!-- Factories -->
-        <script src="scripts/factories/graphFactory.js"></script>
-        <!-- Controllers -->
-        <script src="scripts/controllers/mainCtrl.js"></script>
-        <!-- Directives -->
-        <script src="scripts/directives/mainDirective.js"></script>
-        <script src="scripts/directives/replacementGraph.js"></script>
-        <script src="scripts/directives/loadingModal.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/routes/routes.js"></script>
+    <!-- Services -->
+    <script src="scripts/services/d3service.js"></script>
+    <!-- Factories -->
+    <script src="scripts/factories/graphFactory.js"></script>
+    <!-- Controllers -->
+    <script src="scripts/controllers/mainCtrl.js"></script>
+    <!-- Directives -->
+    <script src="scripts/directives/mainDirective.js"></script>
+    <script src="scripts/directives/replacementGraph.js"></script>
+    <script src="scripts/directives/loadingModal.js"></script>
+    <!-- endbuild -->
+
 </body>
 </html>
